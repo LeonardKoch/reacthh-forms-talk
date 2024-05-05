@@ -1,5 +1,6 @@
-import { Input } from '@/components/ui/input.tsx';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable.tsx';
+import { Outlet } from 'react-router-dom';
+
 
 function App() {
 
@@ -7,10 +8,8 @@ function App() {
     <div className="h-screen w-screen">
         <ResizablePanelGroup  direction="horizontal">
             <ResizablePanel defaultSize={40}>
-                <div>
-                    One
-                    <Input />
-                </div></ResizablePanel>
+                <Outlet />
+            </ResizablePanel>
             <ResizableHandle />
             <ResizablePanel>Two</ResizablePanel>
         </ResizablePanelGroup>
