@@ -20,17 +20,29 @@ export function App() {
         <ResizablePanelGroup  direction="horizontal">
             <ResizablePanel defaultSize={15} className="bg-accent">
                 <ul>
-                    <NavItem to="/">
-                        1. Basic Form
+                    <NavItem to="/html-form">
+                        1. Html Form
                     </NavItem>
-                    <NavItem to="/with-form">
-                        2. With Hook Form
+                    <NavItem to="/states-and-json">
+                        2. States and JSON
                     </NavItem>
-                    <NavItem to="/step-3">
-                        3. Step 3
+                    <NavItem to="/dirty-tracking">
+                        3. Dirty Tracking
                     </NavItem>
-                    <NavItem to="/step-4">
-                        4. Step 4
+                    <NavItem to="/hook-form">
+                        4. Hook Form
+                    </NavItem>
+                    <NavItem to="/hook-form-typesafe">
+                        5. Hook Form Typesafe
+                    </NavItem>
+                    <NavItem to="/auto-saving">
+                        6. Auto Saving
+                    </NavItem>
+                    <NavItem to="/dependent-fields">
+                        7. Dependent Fields
+                    </NavItem>
+                    <NavItem to="/remote-changes">
+                        8. Remote Changes
                     </NavItem>
                 </ul>
             </ResizablePanel>

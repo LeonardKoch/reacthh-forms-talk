@@ -3,14 +3,30 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from '@/components/ui/label.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { Separator } from '@/components/ui/separator.tsx';
+import { useState } from 'react';
 
 
-export function Start() {
+export function StatesAndJSON() {
+    const [countryCode, setCountryCode] = useState<string|null>(null);
+    const [companyName, setCompanyName] = useState<string>('');
+    const [companyType, setCompanyType] = useState<string|null>(null);
+
+    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        const data = {
+            countryCode: countryCode,
+            companyName: companyName,
+            companyType: companyType,
+        }
+        console.log(data);
+    }
+
     return (
         <div>
-            <form className="p-4 flex flex-col gap-2" method="post" action={"/submit"}>
-                <Label htmlFor="country">Country</Label>
-                <Select name="company-type" required>
+            <h1 className="p-4 text-xl font-bold">Start</h1>
+            <form className="p-4 flex flex-col gap-2" method="post" onSubmit={handleSubmit}>
+                <Label htmlFor="country-code">Country</Label>
+                <Select name="country-code" required onValueChange={setCountryCode}>
                     <SelectTrigger className="w-[350px]">
                         <SelectValue placeholder="Select Country" />
                     </SelectTrigger>
@@ -21,9 +37,9 @@ export function Start() {
                 </Select>
                 <Separator className="my-4" />
                 <Label htmlFor="company">Company Name</Label>
-                <Input name="company" required minLength={3} />
+                <Input name="company" required minLength={3} onChange={e => setCompanyName(e.target.value)} />
                 <Label htmlFor="company">Company Type</Label>
-                <Select name="company-type" required>
+                <Select name="company-type" required onValueChange={setCompanyType}>
                     <SelectTrigger className="w-[350px]">
                         <SelectValue placeholder="Select Company Type" />
                     </SelectTrigger>
