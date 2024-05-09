@@ -11,7 +11,7 @@ export function HTMLForm() {
             <h1 className="p-4 text-xl font-bold">HTML Form</h1>
             <form className="p-4 flex flex-col gap-2" method="post" action={"/submit"}>
                 <Label htmlFor="country">Country</Label>
-                <Select name="company-type" required>
+                <Select name="countryCode" required>
                     <SelectTrigger className="w-[350px]">
                         <SelectValue placeholder="Select Country" />
                     </SelectTrigger>
@@ -21,10 +21,10 @@ export function HTMLForm() {
                     </SelectContent>
                 </Select>
                 <Separator className="my-4" />
-                <Label htmlFor="company">Company Name</Label>
-                <Input name="company" required minLength={3} />
-                <Label htmlFor="company">Company Type</Label>
-                <Select name="company-type" required>
+                <Label htmlFor="companyName">Company Name</Label>
+                <Input name="companyName" required minLength={3} />
+                <Label htmlFor="companyType">Company Type</Label>
+                <Select name="companyType" required>
                     <SelectTrigger className="w-[350px]">
                         <SelectValue placeholder="Select Company Type" />
                     </SelectTrigger>

@@ -26,8 +26,8 @@ export function StatesAndJSON() {
         <div>
             <h1 className="p-4 text-xl font-bold">React States and JSON</h1>
             <form className="p-4 flex flex-col gap-2" method="post" onSubmit={handleSubmit}>
-                <Label htmlFor="country-code">Country</Label>
-                <Select name="country-code" required onValueChange={setCountryCode}>
+                <Label htmlFor="countryCode">Country</Label>
+                <Select name="countryCode" required onValueChange={setCountryCode}>
                     <SelectTrigger className="w-[350px]">
                         <SelectValue placeholder="Select Country" />
                     </SelectTrigger>
@@ -37,10 +37,10 @@ export function StatesAndJSON() {
                     </SelectContent>
                 </Select>
                 <Separator className="my-4" />
-                <Label htmlFor="company">Company Name</Label>
-                <Input name="company" required minLength={3} onChange={e => setCompanyName(e.target.value)} />
-                <Label htmlFor="company">Company Type</Label>
-                <Select name="company-type" required onValueChange={setCompanyType}>
+                <Label htmlFor="companyName">Company Name</Label>
+                <Input name="companyName" required minLength={3} onChange={e => setCompanyName(e.target.value)} />
+                <Label htmlFor="companyType">Company Type</Label>
+                <Select name="companyType" required onValueChange={setCompanyType}>
                     <SelectTrigger className="w-[350px]">
                         <SelectValue placeholder="Select Company Type" />
                     </SelectTrigger>
