@@ -4,6 +4,7 @@ import { Label } from '@/components/ui/label.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { Separator } from '@/components/ui/separator.tsx';
 import { useState } from 'react';
+import { submitCompany } from '@/backend/server.ts';
 
 
 export function StatesAndJSON() {
@@ -11,19 +12,19 @@ export function StatesAndJSON() {
     const [companyName, setCompanyName] = useState<string>('');
     const [companyType, setCompanyType] = useState<string|null>(null);
 
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const data = {
             countryCode: countryCode,
-            companyName: companyName,
-            companyType: companyType,
+            name: companyName,
+            type: companyType,
         }
-        console.log(data);
+        await submitCompany(data);
     }
 
     return (
         <div>
-            <h1 className="p-4 text-xl font-bold">Start</h1>
+            <h1 className="p-4 text-xl font-bold">React States and JSON</h1>
             <form className="p-4 flex flex-col gap-2" method="post" onSubmit={handleSubmit}>
                 <Label htmlFor="country-code">Country</Label>
                 <Select name="country-code" required onValueChange={setCountryCode}>

@@ -8,7 +8,7 @@ import { Separator } from '@/components/ui/separator.tsx';
 export function HookForm() {
     return (
         <div>
-            <h1 className="p-4 text-xl font-bold">Start</h1>
+            <h1 className="p-4 text-xl font-bold">With Hook Form</h1>
             <form className="p-4 flex flex-col gap-2" method="post" action={"/submit"}>
                 <Label htmlFor="country">Country</Label>
                 <Select name="company-type" required>
