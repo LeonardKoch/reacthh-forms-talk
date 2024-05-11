@@ -16,15 +16,36 @@ const CompanySchema = z.object({
 
 const registeredCompanies: Company[] = [];
 
-export async function submitCompany(body: unknown) {
+interface SuccessResponse {
+    status: 200;
+}
+
+interface ErrorResponse {
+    status: 400;
+    body: {
+        validationErrors: { field: string; error: string }[];
+    };
+}
+
+type Response = SuccessResponse | ErrorResponse;
+
+function zodIssueToValidationError(issue: z.ZodIssue): { field: string; error: string } {
+    return {
+        field: issue.path.join('.'),
+        error: issue.message
+    };
+}
+
+export async function submitCompany(body: unknown): Promise<Response> {
     console.log('Body..')
     console.log(body);
     const parsedBody = CompanySchema.safeParse(body);
     if (parsedBody.success) {
         registeredCompanies.push(parsedBody.data);
         console.log(registeredCompanies);
+        return { status: 200 };
     } else {
         console.log(parsedBody.error.errors);
-        throw new Error("Invalid company data");
+        return { status: 400, body: { validationErrors: parsedBody.error.errors.map(zodIssueToValidationError) } };
     }
 }

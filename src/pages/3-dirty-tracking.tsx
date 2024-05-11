@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button.tsx';
 import { Separator } from '@/components/ui/separator.tsx';
 import { useState } from 'react';
 import { submitCompany } from '@/backend/server.ts';
+import { CodeDisplay } from '@/components/CodeDisplay.tsx';
 
 
 export function DirtyTracking() {
@@ -59,5 +60,11 @@ export function DirtyTracking() {
                 <Button disabled={!formIsValid} type="submit">Submit</Button>
             </form>
         </div>
+    )
+}
+
+export function DirtyTrackingCode() {
+    return (
+        <CodeDisplay />
     )
 }

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button.tsx';
 import { Separator } from '@/components/ui/separator.tsx';
 import { Controller, useForm } from 'react-hook-form';
 import { submitCompany } from '@/backend/server.ts';
+import { CodeDisplay } from '@/components/CodeDisplay.tsx';
 
 
 export function HookForm() {
@@ -58,5 +59,11 @@ export function HookForm() {
                 <Button disabled={!formState.isValid} type="submit">Submit</Button>
             </form>
         </div>
+    )
+}
+
+export function HookFormCode() {
+    return (
+        <CodeDisplay />
     )
 }

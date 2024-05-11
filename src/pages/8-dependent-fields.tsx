@@ -3,6 +3,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from '@/components/ui/label.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { Separator } from '@/components/ui/separator.tsx';
+import { CodeDisplay } from '@/components/CodeDisplay.tsx';
 
 
 export function DependentFields() {
@@ -11,5 +12,11 @@ export function DependentFields() {
             <h1 className="p-4 text-xl font-bold">Dependent Fields</h1>
 
         </div>
+    )
+}
+
+export function DependentFieldsCode() {
+    return (
+        <CodeDisplay />
     )
 }

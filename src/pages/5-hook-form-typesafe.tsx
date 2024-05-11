@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { Controller } from 'react-hook-form';
 import { submitCompany } from '@/backend/server.ts';
 import { useZodForm } from '@/lib/useZodForm.ts';
+import { CodeDisplay } from '@/components/CodeDisplay.tsx';
 
 const formSchema = z.object({
     countryCode: z.string().min(2),
@@ -65,5 +66,11 @@ export function HookFormTypesafe() {
                 <Button disabled={!formState.isValid} type="submit">Submit</Button>
             </form>
         </div>
+    )
+}
+
+export function HookFormTypesafeCode() {
+    return (
+        <CodeDisplay />
     )
 }

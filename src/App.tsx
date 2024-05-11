@@ -14,8 +14,24 @@ function NavItem (props: { to: string, children: ReactNode}) {
     )
 }
 
-export function App() {
+export function RoutePanels(props: { renderLeftPanel: () => ReactNode, renderRightPanel: () => ReactNode }) {
+    return (
+        <>
+            <ResizableHandle />
+            <ResizablePanel minSize={18} defaultSize={40} className="pl-4 pr-4 pt-8 pb-8">
+                <Card>
+                    {props.renderLeftPanel()}
+                </Card>
+            </ResizablePanel>
+            <ResizableHandle />
+            <ResizablePanel className="p-4" minSize={18}>
+                {props.renderRightPanel()}
+            </ResizablePanel>
+        </>
+    )
+}
 
+export function App() {
   return (
     <div className="h-screen w-screen">
         <ResizablePanelGroup  direction="horizontal">
@@ -50,14 +66,7 @@ export function App() {
                     </NavItem>
                 </ul>
             </ResizablePanel>
-            <ResizableHandle />
-            <ResizablePanel minSize={18} defaultSize={40} className="pl-4 pr-4 pt-8 pb-8">
-                <Card>
-                    <Outlet/>
-                </Card>
-            </ResizablePanel>
-            <ResizableHandle />
-            <ResizablePanel minSize={18}>Two</ResizablePanel>
+            <Outlet/>
         </ResizablePanelGroup>
     </div>
   )

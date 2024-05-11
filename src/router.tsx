@@ -1,14 +1,14 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-import { App } from '@/App.tsx';
-import { HTMLForm } from '@/pages/1-html-form.tsx';
-import { StatesAndJSON } from '@/pages/2-states-and-json.tsx';
-import { DirtyTracking } from '@/pages/3-dirty-tracking.tsx';
-import { HookForm } from '@/pages/4-hook-form.tsx';
-import { HookFormTypesafe } from '@/pages/5-hook-form-typesafe.tsx';
-import { AutoSaving } from '@/pages/7-auto-saving.tsx';
-import { DependentFields } from '@/pages/8-dependent-fields.tsx';
-import { RemoteChanges } from '@/pages/9-remote-changes.tsx';
-import { PreloadingData } from '@/pages/6-preloading-data.tsx';
+import { App, RoutePanels } from '@/App.tsx';
+import { HTMLForm, HTMLFormCode } from '@/pages/1-html-form.tsx';
+import { StatesAndJSON, StatesAndJSONCode } from '@/pages/2-states-and-json.tsx';
+import { DirtyTracking, DirtyTrackingCode } from '@/pages/3-dirty-tracking.tsx';
+import { HookForm, HookFormCode } from '@/pages/4-hook-form.tsx';
+import { HookFormTypesafe, HookFormTypesafeCode } from '@/pages/5-hook-form-typesafe.tsx';
+import { AutoSaving, AutoSavingCode } from '@/pages/7-auto-saving.tsx';
+import { DependentFields, DependentFieldsCode } from '@/pages/8-dependent-fields.tsx';
+import { RemoteChanges, RemoteChangesCode } from '@/pages/9-remote-changes.tsx';
+import { PreloadingData, PreloadingDataCode } from '@/pages/6-preloading-data.tsx';
 
 export const router = createBrowserRouter([
     {
@@ -21,39 +21,39 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/html-form",
-                element: <HTMLForm/>,
+                element: <RoutePanels renderLeftPanel={() => <HTMLForm/>} renderRightPanel={() => <HTMLFormCode />} />,
             },
             {
                 path: "/states-and-json",
-                element: <StatesAndJSON/>,
+                element: <RoutePanels renderLeftPanel={() => <StatesAndJSON/>} renderRightPanel={() => <StatesAndJSONCode />} />,
             },
             {
                 path: "/dirty-tracking",
-                element: <DirtyTracking/>,
+                element: <RoutePanels renderLeftPanel={() => <DirtyTracking/>} renderRightPanel={() => <DirtyTrackingCode />} />,
             },
             {
                 path: "/hook-form",
-                element: <HookForm/>,
+                element: <RoutePanels renderLeftPanel={() => <HookForm/>} renderRightPanel={() => <HookFormCode />} />,
             },
             {
                 path: "/hook-form-typesafe",
-                element: <HookFormTypesafe/>,
+                element: <RoutePanels renderLeftPanel={() => <HookFormTypesafe/>} renderRightPanel={() => <HookFormTypesafeCode />} />,
             },
             {
                 path: "/preloading-data",
-                element: <PreloadingData/>,
+                element: <RoutePanels renderLeftPanel={() => <PreloadingData/>} renderRightPanel={() => <PreloadingDataCode />} />,
             },
             {
                 path: "/auto-saving",
-                element: <AutoSaving/>,
+                element: <RoutePanels renderLeftPanel={() => <AutoSaving/>} renderRightPanel={() => <AutoSavingCode />} />,
             },
             {
                 path: "/dependent-fields",
-                element: <DependentFields/>,
+                element: <RoutePanels renderLeftPanel={() => <DependentFields/>} renderRightPanel={() => <DependentFieldsCode />} />,
             },
             {
                 path: "/remote-changes",
-                element: <RemoteChanges/>,
+                element: <RoutePanels renderLeftPanel={() => <RemoteChanges/>} renderRightPanel={() => <RemoteChangesCode />} />,
             },
         ]
     },

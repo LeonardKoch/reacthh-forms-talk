@@ -3,6 +3,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from '@/components/ui/label.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { Separator } from '@/components/ui/separator.tsx';
+import { CodeDisplay } from '@/components/CodeDisplay.tsx';
 
 
 export function HTMLForm() {
@@ -41,5 +42,12 @@ export function HTMLForm() {
                 <Button type="submit">Submit</Button>
             </form>
         </div>
+    )
+}
+
+
+export function HTMLFormCode() {
+    return (
+        <CodeDisplay />
     )
 }

@@ -5,12 +5,14 @@ import { Button } from '@/components/ui/button.tsx';
 import { Separator } from '@/components/ui/separator.tsx';
 import { useState } from 'react';
 import { submitCompany } from '@/backend/server.ts';
+import { CodeDisplay } from '@/components/CodeDisplay.tsx';
 
 
 export function StatesAndJSON() {
     const [countryCode, setCountryCode] = useState<string|null>(null);
     const [companyName, setCompanyName] = useState<string>('');
     const [companyType, setCompanyType] = useState<string|null>(null);
+    const [validationErrors, setValidationErrors] = useState<{ field: string; error: string }[]>([]);
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -57,5 +59,12 @@ export function StatesAndJSON() {
                 <Button type="submit">Submit</Button>
             </form>
         </div>
+    )
+}
+
+
+export function StatesAndJSONCode() {
+    return (
+        <CodeDisplay />
     )
 }
