@@ -24,8 +24,10 @@ export function RoutePanels(props: { renderLeftPanel: () => ReactNode, renderRig
                 </Card>
             </ResizablePanel>
             <ResizableHandle />
-            <ResizablePanel className="p-4" minSize={18}>
-                {props.renderRightPanel()}
+            <ResizablePanel minSize={18}>
+                <div className="p-4 overflow-y-scroll max-h-screen">
+                    {props.renderRightPanel()}
+                </div>
             </ResizablePanel>
         </>
     )

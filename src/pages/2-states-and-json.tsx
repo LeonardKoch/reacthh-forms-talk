@@ -16,12 +16,12 @@ export function StatesAndJSON() {
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        setSubmitting(true);
         const data = {
             countryCode: countryCode,
             companyName: companyName,
             companyType: companyType,
         }
+        setSubmitting(true);
         await submitCompany(data);
         setSubmitting(false);
     }
@@ -69,30 +69,14 @@ export function StatesAndJSONCode() {
     return (
         <div>
             <p>From</p>
-            <CodeDisplay code={`<form method="post" action={"/submit"}>`}/>
-            <p>To</p>
             <CodeDisplay code={
-`async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const data = {
-        countryCode: countryCode,
-        name: companyName,
-        type: companyType,
-    }
-    await submitCompany(data);
-}
-
-<form onSubmit={handleSubmit}>`}/>
-            <Separator className="my-4"/>
-            <p>From</p>
-            <CodeDisplay code={
-`<Select name="countryCode" required>
+                `<Select name="countryCode" required>
 <Input name="companyName" required minLength={3} />
 <Select name="companyType" required>`
-}/>
+            }/>
             <p>To</p>
             <CodeDisplay code={
-`const [countryCode, setCountryCode] = useState<string|undefined>(undefined);
+                `const [countryCode, setCountryCode] = useState<string|undefined>(undefined);
 const [companyName, setCompanyName] = useState<string>('');
 const [companyType, setCompanyType] = useState<string|undefined>(undefined);
 
@@ -101,9 +85,29 @@ const [companyType, setCompanyType] = useState<string|undefined>(undefined);
 <Select name="companyType" required value={companyType} onValueChange={setCompanyType}>`
             }/>
             <Separator className="my-4"/>
-            <p>Submitting Indicator</p>
+
+            <p>From</p>
+            <CodeDisplay code={`<form method="post" action={"/submit"}>`}/>
+            <p>To</p>
             <CodeDisplay code={
-`const [submitting, setSubmitting] = useState<boolean>(false);
+                `async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const data = {
+        countryCode: countryCode,
+        name: companyName,
+        type: companyType,
+    }
+    setSubmitting(true);
+    await submitCompany(data);
+    setSubmitting(false);;
+}
+
+<form onSubmit={handleSubmit}>`}/>
+
+            <Separator className="my-4"/>
+            <p>Dynamic Submit Button</p>
+            <CodeDisplay code={
+                `const [submitting, setSubmitting] = useState<boolean>(false);
 <Button type="submit" disabled={submitting}>{submitting ? 'Submitting...' : 'Submit'}</Button>`
             }/>
         </div>
