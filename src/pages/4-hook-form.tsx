@@ -15,7 +15,7 @@ export function HookForm() {
     return (
         <div>
             <h1 className="p-4 text-xl font-bold">With Hook Form</h1>
-            <form className="p-4 flex flex-col gap-2" method="post" onSubmit={handleSubmit(data => submitCompany(data))}>
+            <form className="p-4 flex flex-col gap-2" onSubmit={handleSubmit(data => submitCompany(data))}>
                 <Label htmlFor="countryCode">Country</Label>
                 <Controller
                     name="countryCode"

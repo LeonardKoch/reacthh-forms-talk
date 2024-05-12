@@ -3,33 +3,32 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from '@/components/ui/label.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { Separator } from '@/components/ui/separator.tsx';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { submitCompany } from '@/backend/server.ts';
 import { CodeDisplay } from '@/components/CodeDisplay.tsx';
 
 
 export function StatesAndJSON() {
-    const [countryCode, setCountryCode] = useState<string|null>(null);
+    const [countryCode, setCountryCode] = useState<string>('');
     const [companyName, setCompanyName] = useState<string>('');
-    const [companyType, setCompanyType] = useState<string|null>(null);
-    const [validationErrors, setValidationErrors] = useState<{ field: string; error: string }[]>([]);
+    const [companyType, setCompanyType] = useState<string>('');
 
-    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    async function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const data = {
             countryCode: countryCode,
-            name: companyName,
-            type: companyType,
+            companyName: companyName,
+            companyType: companyType,
         }
         await submitCompany(data);
     }
 
     return (
         <div>
-            <h1 className="p-4 text-xl font-bold">React States and JSON</h1>
-            <form className="p-4 flex flex-col gap-2" method="post" onSubmit={handleSubmit}>
+            <h1 className="p-4 text-xl font-bold">React States and JSON Request</h1>
+            <form className="p-4 flex flex-col gap-2" onSubmit={handleSubmit}>
                 <Label htmlFor="countryCode">Country</Label>
-                <Select name="countryCode" required onValueChange={setCountryCode}>
+                <Select name="countryCode" required value={countryCode} onValueChange={setCountryCode}>
                     <SelectTrigger className="w-[350px]">
                         <SelectValue placeholder="Select Country" />
                     </SelectTrigger>
@@ -40,9 +39,9 @@ export function StatesAndJSON() {
                 </Select>
                 <Separator className="my-4" />
                 <Label htmlFor="companyName">Company Name</Label>
-                <Input name="companyName" required minLength={3} onChange={e => setCompanyName(e.target.value)} />
+                <Input name="companyName" required minLength={3} value={companyName} onChange={e => setCompanyName(e.target.value)} />
                 <Label htmlFor="companyType">Company Type</Label>
-                <Select name="companyType" required onValueChange={setCompanyType}>
+                <Select name="companyType" required value={companyType} onValueChange={setCompanyType}>
                     <SelectTrigger className="w-[350px]">
                         <SelectValue placeholder="Select Company Type" />
                     </SelectTrigger>
@@ -65,6 +64,39 @@ export function StatesAndJSON() {
 
 export function StatesAndJSONCode() {
     return (
-        <CodeDisplay />
+        <div>
+            <p>From</p>
+            <CodeDisplay code={`<form method="post" action={"/submit"}>`}/>
+            <p>To</p>
+            <CodeDisplay code={
+`async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const data = {
+        countryCode: countryCode,
+        name: companyName,
+        type: companyType,
+    }
+    await submitCompany(data);
+}
+
+<form onSubmit={handleSubmit}>`}/>
+            <Separator className="my-4"/>
+            <p>From</p>
+            <CodeDisplay code={
+`<Select name="countryCode" required>
+<Input name="companyName" required minLength={3} />
+<Select name="companyType" required>`
+}/>
+            <p>To</p>
+            <CodeDisplay code={
+`const [countryCode, setCountryCode] = useState<string|undefined>(undefined);
+const [companyName, setCompanyName] = useState<string>('');
+const [companyType, setCompanyType] = useState<string|undefined>(undefined);
+
+<Select name="countryCode" required value={countryCode} onValueChange={setCountryCode}>
+<Input name="companyName" required minLength={3} value={companyName} onChange={e => setCompanyName(e.target.value)} />
+<Select name="companyType" required value={companyType} onValueChange={setCompanyType}>`
+            }/>
+        </div>
     )
 }

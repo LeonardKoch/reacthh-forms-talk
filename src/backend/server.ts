@@ -30,10 +30,29 @@ interface ErrorResponse {
 type Response = SuccessResponse | ErrorResponse;
 
 function zodIssueToValidationError(issue: z.ZodIssue): { field: string; error: string } {
-    return {
-        field: issue.path.join('.'),
-        error: issue.message
-    };
+    const fieldKey = issue.path.join('.');
+    switch (fieldKey) {
+        case 'countryCode':
+            return {
+                field: 'countryCode',
+                error: issue.message
+            };
+        case 'companyName':
+            return {
+                field: 'companyName',
+                error: issue.message
+            };
+        case 'companyType':
+            return {
+                field: 'companyType',
+                error: issue.message
+            };
+        default:
+            return {
+                field: fieldKey,
+                error: issue.message
+            };
+    }
 }
 
 export async function submitCompany(body: unknown): Promise<Response> {
@@ -41,8 +60,10 @@ export async function submitCompany(body: unknown): Promise<Response> {
     console.log(body);
     const parsedBody = CompanySchema.safeParse(body);
     if (parsedBody.success) {
+        if (registeredCompanies.some(c => c.countryCode === parsedBody.data.countryCode && c.companyName === parsedBody.data.companyName)) {
+            return { status: 400, body: { validationErrors: [{ field: 'companyName', error: `Company name already exists in ${parsedBody.data.countryCode}` }] } };
+        }
         registeredCompanies.push(parsedBody.data);
-        console.log(registeredCompanies);
         return { status: 200 };
     } else {
         console.log(parsedBody.error.errors);

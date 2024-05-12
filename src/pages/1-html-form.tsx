@@ -9,7 +9,7 @@ import { CodeDisplay } from '@/components/CodeDisplay.tsx';
 export function HTMLForm() {
     return (
         <div>
-            <h1 className="p-4 text-xl font-bold">HTML Form</h1>
+            <h1 className="p-4 text-xl font-bold">HTML Form - Our Baseline</h1>
             <form className="p-4 flex flex-col gap-2" method="post" action={"/submit"}>
                 <Label htmlFor="country">Country</Label>
                 <Select name="countryCode" required>
@@ -50,10 +50,10 @@ export function HTMLFormCode() {
     return (
         <CodeDisplay
             code={
-`<form className="p-4 flex flex-col gap-2" method="post" action={"/submit"}>
+`<form method="post" action={"/submit"}>
     <Label htmlFor="country">Country</Label>
     <Select name="countryCode" required>
-        <SelectTrigger className="w-[350px]">
+        <SelectTrigger 
             <SelectValue placeholder="Select Country" />
         </SelectTrigger>
         <SelectContent>
@@ -61,12 +61,12 @@ export function HTMLFormCode() {
             <SelectItem value="US">United States of America</SelectItem>
         </SelectContent>
     </Select>
-    <Separator className="my-4" />
+    <Separator />
     <Label htmlFor="companyName">Company Name</Label>
     <Input name="companyName" required minLength={3} />
     <Label htmlFor="companyType">Company Type</Label>
     <Select name="companyType" required>
-        <SelectTrigger className="w-[350px]">
+        <SelectTrigger 
             <SelectValue placeholder="Select Company Type" />
         </SelectTrigger>
         <SelectContent>
@@ -78,7 +78,7 @@ export function HTMLFormCode() {
             <SelectItem value="S-Corp">S-Corp</SelectItem>
         </SelectContent>
     </Select>
-    <Separator className="my-4" />
+    <Separator />
     <Button type="submit">Submit</Button>
 </form>`}/>
     )

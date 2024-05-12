@@ -3,34 +3,69 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from '@/components/ui/label.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { Separator } from '@/components/ui/separator.tsx';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { submitCompany } from '@/backend/server.ts';
 import { CodeDisplay } from '@/components/CodeDisplay.tsx';
+import { ErrorMessage } from '@/components/ErrorMessage.tsx';
 
 
 export function DirtyTracking() {
-    const [countryCode, setCountryCode] = useState<string|null>(null);
+    const [countryCode, setCountryCode] = useState<string|undefined>(undefined);
     const [companyName, setCompanyName] = useState<string>('');
-    const [companyType, setCompanyType] = useState<string|null>(null);
-
-    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-        const data = {
-            countryCode: countryCode,
-            name: companyName,
-            type: companyType,
-        }
-        await submitCompany(data);
-    }
+    const [companyType, setCompanyType] = useState<string|undefined>(undefined);
+    const [countryCodeError, setCountryCodeError] = useState<string|undefined>(undefined);
+    const [companyNameError, setCompanyNameError] = useState<string|undefined>(undefined);
+    const [companyTypeError, setCompanyTypeError] = useState<string|undefined>(undefined);
 
     const formIsValid = countryCode && companyName.length >= 3 && companyType;
 
+    async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+        if (!formIsValid) {
+            return;
+        }
+        event.preventDefault();
+        const data = {
+            countryCode: countryCode,
+            companyName: companyName,
+            companyType: companyType,
+        }
+        const response = await submitCompany(data);
+        switch (response.status) {
+            case 200: {
+                setCountryCode('');
+                setCompanyName('');
+                setCompanyType('');
+                setCountryCodeError(undefined);
+                setCompanyNameError(undefined);
+                setCompanyTypeError(undefined);
+                break;
+            }
+            case 400: {
+                response.body.validationErrors.forEach(error => {
+                    switch (error.field) {
+                        case 'countryCode':
+                            setCountryCodeError(error.error);
+                            break;
+                        case 'companyName':
+                            setCompanyNameError(error.error);
+                            break;
+                        case 'companyType':
+                            setCompanyTypeError(error.error);
+                            break;
+                    }
+                });
+                break;
+            }
+        }
+    }
+
+
     return (
         <div>
-            <h1 className="p-4 text-xl font-bold">React States with Dirty Tracking</h1>
-            <form className="p-4 flex flex-col gap-2" method="post" onSubmit={handleSubmit}>
+            <h1 className="p-4 text-xl font-bold">React States and JSON Request</h1>
+            <form className="p-4 flex flex-col gap-2" onSubmit={handleSubmit}>
                 <Label htmlFor="countryCode">Country</Label>
-                <Select name="countryCode" required onValueChange={setCountryCode}>
+                <Select name="countryCode" required value={countryCode} onValueChange={setCountryCode}>
                     <SelectTrigger className="w-[350px]">
                         <SelectValue placeholder="Select Country" />
                     </SelectTrigger>
@@ -41,9 +76,10 @@ export function DirtyTracking() {
                 </Select>
                 <Separator className="my-4" />
                 <Label htmlFor="companyName">Company Name</Label>
-                <Input name="companyName" required minLength={3} onChange={e => setCompanyName(e.target.value)} />
+                <Input name="companyName" required minLength={3} value={companyName} onChange={e => setCompanyName(e.target.value)} />
+                {companyNameError ? <ErrorMessage message={companyNameError} /> : null}
                 <Label htmlFor="companyType">Company Type</Label>
-                <Select name="companyType" required onValueChange={setCompanyType}>
+                <Select name="companyType" required value={companyType} onValueChange={setCompanyType}>
                     <SelectTrigger className="w-[350px]">
                         <SelectValue placeholder="Select Company Type" />
                     </SelectTrigger>
