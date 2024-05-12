@@ -11,7 +11,7 @@ export const CodeDisplay = (props: { code?: string}) => (
             <pre className="rounded p-4 text-wrap" style={style}>
         {tokens.map((line, i) => (
             <div key={i} {...getLineProps({ line })}>
-                <span className="pr-4">{i + 1}</span>
+                <span className="pr-4 w-8 inline-block">{i + 1}</span>
                 {line.map((token, key) => (
                     <span key={key} {...getTokenProps({ token })} />
                 ))}
