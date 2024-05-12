@@ -17,7 +17,7 @@ export function DynamicOptions() {
 
     const formIsValid = countryCode && companyName.length >= 3 && companyType;
 
-    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    async function onSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (!formIsValid) {
             return;
@@ -49,7 +49,7 @@ export function DynamicOptions() {
     return (
         <div>
             <h1 className="p-4 text-xl font-bold">React States and JSON Request</h1>
-            <form className="p-4 flex flex-col gap-2" onSubmit={handleSubmit}>
+            <form className="p-4 flex flex-col gap-2" onSubmit={onSubmit}>
                 <Label htmlFor="countryCode">Country</Label>
                 <Select name="countryCode" required value={countryCode} onValueChange={setCountryCode}>
                     <SelectTrigger className="w-[350px]">
@@ -82,7 +82,7 @@ export function DynamicOptions() {
                 </Select>
                 <ErrorMessage error={validationErrors['companyType']} />
                 <Separator className="my-4" />
-                <Button type="submit" disabled={submitting} >{submitting ? 'Submitting...' : 'Submit'}</Button>
+                <Button type="submit" disabled={submitting || !formIsValid} >{submitting ? 'Submitting...' : 'Submit'}</Button>
             </form>
         </div>
     )
@@ -90,14 +90,24 @@ export function DynamicOptions() {
 
 export function DynamicOptionsCode() {
     return (
-        <CodeDisplay code={
-`<SelectContent>
+        <div>
+            <p>Dynamic Options</p>
+            <CodeDisplay code={
+                `<SelectContent>
     <SelectItem disabled={countryCode !== 'DE'} value="GmbH">GmbH</SelectItem>
     <SelectItem disabled={countryCode !== 'DE'} value="UG">UG</SelectItem>
     <SelectItem disabled={countryCode !== 'DE'} value="AG">AG</SelectItem>
     <SelectItem disabled={countryCode !== 'US'} value="LLC">LLC</SelectItem>
     <SelectItem disabled={countryCode !== 'US'} value="C-Corp">C-Corp</SelectItem>
     <SelectItem disabled={countryCode !== 'US'} value="S-Corp">S-Corp</SelectItem>
-</SelectContent>`} />
+</SelectContent>`}/>
+            <Separator className="my-4"/>
+            <p>Disable Form while invalid</p>
+            <CodeDisplay code={
+ `const formIsValid = countryCode && companyName.length >= 3 && companyType;
+
+<Button type="submit" disabled={submitting || !formIsValid} >{submitting ? 'Submitting...' : 'Submit'}</Button>`
+            }/>
+        </div>
     )
 }

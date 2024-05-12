@@ -14,7 +14,7 @@ export function StatesAndJSON() {
     const [companyType, setCompanyType] = useState<string>('');
     const [submitting, setSubmitting] = useState<boolean>(false);
 
-    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    async function onSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         const data = {
             countryCode: countryCode,
@@ -29,7 +29,7 @@ export function StatesAndJSON() {
     return (
         <div>
             <h1 className="p-4 text-xl font-bold">React States and JSON Request</h1>
-            <form className="p-4 flex flex-col gap-2" onSubmit={handleSubmit}>
+            <form className="p-4 flex flex-col gap-2" onSubmit={onSubmit}>
                 <Label htmlFor="countryCode">Country</Label>
                 <Select name="countryCode" required value={countryCode} onValueChange={setCountryCode}>
                     <SelectTrigger className="w-[350px]">
@@ -90,7 +90,7 @@ const [companyType, setCompanyType] = useState<string|undefined>(undefined);
             <CodeDisplay code={`<form method="post" action={"/submit"}>`}/>
             <p>To</p>
             <CodeDisplay code={
-                `async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+                `async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const data = {
         countryCode: countryCode,
@@ -102,7 +102,7 @@ const [companyType, setCompanyType] = useState<string|undefined>(undefined);
     setSubmitting(false);;
 }
 
-<form onSubmit={handleSubmit}>`}/>
+<form onSubmit={onSubmit}>`}/>
 
             <Separator className="my-4"/>
             <p>Dynamic Submit Button</p>

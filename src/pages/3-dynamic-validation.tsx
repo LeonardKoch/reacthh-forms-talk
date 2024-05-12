@@ -15,14 +15,8 @@ export function DynamicValidation() {
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
-    const formIsValid = countryCode && companyName.length >= 3 && companyType;
-
-    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    async function onSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        if (!formIsValid) {
-            return;
-        }
-
         const data = {
             countryCode: countryCode,
             companyName: companyName,
@@ -49,7 +43,7 @@ export function DynamicValidation() {
     return (
         <div>
             <h1 className="p-4 text-xl font-bold">React States and JSON Request</h1>
-            <form className="p-4 flex flex-col gap-2" onSubmit={handleSubmit}>
+            <form className="p-4 flex flex-col gap-2" onSubmit={onSubmit}>
                 <Label htmlFor="countryCode">Country</Label>
                 <Select name="countryCode" required value={countryCode} onValueChange={setCountryCode}>
                     <SelectTrigger className="w-[350px]">
@@ -93,7 +87,7 @@ export function DynamicValidationCode() {
         <div>
             <CodeDisplay code={
 `const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
-async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+async function onSubmit(e: FormEvent<HTMLFormElement>) {
     // { previous code omitted for brevity ... }
     const response = await submitCompany(data);
     switch (response.status) {

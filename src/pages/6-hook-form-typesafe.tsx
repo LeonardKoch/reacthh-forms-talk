@@ -8,6 +8,7 @@ import { Controller } from 'react-hook-form';
 import { submitCompany } from '@/backend/server.ts';
 import { useZodForm } from '@/lib/useZodForm.ts';
 import { CodeDisplay } from '@/components/CodeDisplay.tsx';
+import { ErrorMessage } from '@hookform/error-message';
 
 const formSchema = z.object({
     countryCode: z.string().min(2),
@@ -16,9 +17,9 @@ const formSchema = z.object({
 });
 
 export function HookFormTypesafe() {
-    const { control, register, handleSubmit, formState } = useZodForm({ schema: formSchema, mode: 'onChange' });
-    // TODO update this with a clever functionality from the previous step
-    console.log(formState)
+    const {
+        control, register, handleSubmit, formState: { errors, isValid},
+    } = useZodForm({ schema: formSchema, mode: 'onChange' });
     return (
         <div>
             <h1 className="p-4 text-xl font-bold">Typesafe Hook Form</h1>
@@ -39,9 +40,11 @@ export function HookFormTypesafe() {
                         </Select>
                     )}
                 />
+                <ErrorMessage errors={errors} name="countryCode" />
                 <Separator className="my-4" />
                 <Label htmlFor="companyName">Company Name</Label>
                 <Input required minLength={3} {...register('companyName')} />
+                <ErrorMessage errors={errors} name="companyName" />
                 <Label htmlFor="companyType">Company Type</Label>
                 <Controller
                     name="companyType"
@@ -62,8 +65,9 @@ export function HookFormTypesafe() {
                         </Select>
                     )}
                 />
+                <ErrorMessage errors={errors} name="companyType" />
                 <Separator className="my-4" />
-                <Button disabled={!formState.isValid} type="submit">Submit</Button>
+                <Button disabled={!isValid} type="submit">Submit</Button>
             </form>
         </div>
     )

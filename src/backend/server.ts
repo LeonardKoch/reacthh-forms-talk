@@ -35,6 +35,7 @@ function zodIssuesToValidationErrors(issues: z.ZodIssue[]): Record<string, strin
 }
 
 export async function submitCompany(body: unknown): Promise<Response> {
+    console.log('Submitting company', body);
     await wait(1500);
     const parsedBody = CompanySchema.safeParse(body);
     if (parsedBody.success) {
