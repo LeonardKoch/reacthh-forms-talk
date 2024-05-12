@@ -43,26 +43,29 @@ export function App() {
                     <NavItem to="/states-and-json">
                         2. States and JSON
                     </NavItem>
-                    <NavItem to="/dirty-tracking">
-                        3. Dirty Tracking
+                    <NavItem to="/dynamic-validation">
+                        3. Dynamic Validation
+                    </NavItem>
+                    <NavItem to="/dynamic-options">
+                        4. Dynamic Options
                     </NavItem>
                     <NavItem to="/hook-form">
-                        4. Hook Form
+                        5. Hook Form
                     </NavItem>
                     <NavItem to="/hook-form-typesafe">
-                        5. Hook Form Typesafe
+                        6. Hook Form Typesafe
                     </NavItem>
                     <NavItem to="/preloading-data">
-                        6. Preloading Data
+                        7. Preloading Data
                     </NavItem>
                     <NavItem to="/auto-saving">
-                        7. Auto Saving
+                        8. Auto Saving
                     </NavItem>
                     <NavItem to="/dependent-fields">
-                        8. Dependent Fields
+                        9. Dependent Fields
                     </NavItem>
                     <NavItem to="/remote-changes">
-                        9. Remote Changes
+                        10. Remote Changes
                     </NavItem>
                 </ul>
             </ResizablePanel>

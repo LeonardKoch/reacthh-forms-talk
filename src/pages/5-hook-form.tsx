@@ -47,7 +47,7 @@ export function HookForm() {
                             <SelectContent>
                                 <SelectItem value="GmbH">GmbH</SelectItem>
                                 <SelectItem value="UG">UG</SelectItem>
-                                <SelectItem value="AG">UG</SelectItem>
+                                <SelectItem value="AG">AG</SelectItem>
                                 <SelectItem value="LLC">LLC</SelectItem>
                                 <SelectItem value="C-Corp">C-Corp</SelectItem>
                                 <SelectItem value="S-Corp">S-Corp</SelectItem>
