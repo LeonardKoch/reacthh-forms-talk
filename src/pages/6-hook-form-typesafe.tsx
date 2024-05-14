@@ -19,7 +19,7 @@ const formSchema = z.object({
 export function HookFormTypesafe() {
     const {
         control, register, handleSubmit, formState: { errors, isValid, isSubmitting}, reset, setError
-    } = useZodForm({ schema: formSchema, mode: 'onChange', defaultValues: { countryCode: '', companyName: '', companyType: '' } })
+    } = useZodForm({ schema: formSchema, mode: 'onChange', defaultValues: { companyName: '' } })
 
     const onSubmit = handleSubmit(async (data) => {
         const response = await submitCompany(data);
