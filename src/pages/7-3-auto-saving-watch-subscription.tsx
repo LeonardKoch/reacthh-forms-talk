@@ -128,8 +128,8 @@ export function AutoSavingWatchSubscriptionCode() {
     return () => subscription.unsubscribe();
 }, [watch]);`}/>
             <p className="p-4 text-xl">😙🤌️</p>
-            <p>The watch() callback only gets called on form changes</p>
-            <p>No superfluous call on random re-renders</p>
+            <p>The callback passed to watch() only gets called on form changes</p>
+            <p>No superfluous calls on random re-renders</p>
         </div>
     )
 }
