@@ -77,7 +77,7 @@ export function DependentFieldsTypeSafe() {
 
     return (
         <div>
-            <h1 className="p-4 text-xl font-bold">Preloading</h1>
+            <h1 className="p-4 text-xl font-bold">Dependent Fields - Typesafe</h1>
             <form className="p-4 flex flex-col gap-2" onSubmit={onSubmit}>
                 <Label htmlFor="countryCode">Country</Label>
                 <Controller
@@ -133,6 +133,7 @@ export function DependentFieldsTypeSafeCode() {
     return (
         <div>
             <h2 className="text-l font-bold">How do we take this field dependency into our Types?</h2>
+            <p>Assume we want have a nice and strict API to work with:</p>
             <CodeDisplay code={
                 `// Instead of one shared open type 
 type CompanyType = "GmbH" | "UG" | "AG" | "LLC" | "C-Corp" | "S-Corp";
