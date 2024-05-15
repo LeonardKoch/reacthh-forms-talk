@@ -1,5 +1,5 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-import { App, RoutePanels } from '@/App.tsx';
+import { App, RoutePanels, SingleMainPanel } from '@/App.tsx';
 import { HTMLForm, HTMLFormCode } from '@/pages/1-html-form.tsx';
 import { StatesAndJSON, StatesAndJSONCode } from '@/pages/2-states-and-json.tsx';
 import { DynamicValidation, DynamicValidationCode } from '@/pages/3-dynamic-validation.tsx';
@@ -14,6 +14,8 @@ import {
 } from '@/pages/7-3-auto-saving-watch-subscription.tsx';
 import { Preloading, PreloadingCode } from '@/pages/8-preloading.tsx';
 import { DependentFields, DependentFieldsCode } from '@/pages/9-dependent-fields.tsx';
+import { DependentFieldsTypeSafe, DependentFieldsTypeSafeCode } from '@/pages/10-dependent-fields-typesafe.tsx';
+import { Thanks } from '@/pages/11-thanks.tsx';
 
 export const router = createBrowserRouter([
     {
@@ -67,6 +69,14 @@ export const router = createBrowserRouter([
             {
                 path: "/dependent-fields",
                 element: <RoutePanels renderLeftPanel={() => <DependentFields/>} renderRightPanel={() => <DependentFieldsCode />} />,
+            },
+            {
+                path: "/dependent-fields-typesafe",
+                element: <RoutePanels renderLeftPanel={() => <DependentFieldsTypeSafe/>} renderRightPanel={() => <DependentFieldsTypeSafeCode />} />,
+            },
+            {
+                path: "/thanks",
+                element: <SingleMainPanel><Thanks /></SingleMainPanel>,
             },
         ]
     },

@@ -2,7 +2,6 @@ import { wait } from '@/lib/wait';
 import { z } from 'zod';
 
 type CompanyType = "GmbH" | "UG" | "AG" | "LLC" | "C-Corp" | "S-Corp";
-
 interface Company {
     countryCode: 'DE' | 'US';
     companyName: string;
@@ -49,6 +48,24 @@ export async function submitCompany(body: unknown): Promise<Response> {
     }
 }
 
+type DECompanyType = "GmbH" | "UG" | "AG";
+interface DECompany {
+    countryCode: 'DE';
+    companyName: string;
+    companyType: DECompanyType;
+}
+
+type USCompanyType = "LLC" | "C-Corp" | "S-Corp";
+interface USCompany {
+    countryCode: 'US';
+    companyName: string;
+    companyType: USCompanyType;
+}
+
+export function submitCompanyStrict(body: DECompany | USCompany): Promise<Response> {
+    return submitCompany(body);
+}
+
 
 export type PartialCompany = Partial<Company>;
 
@@ -70,6 +87,48 @@ export async function loadCompanyDraft(): Promise<PartialCompany | undefined> {
         return undefined;
     }
     const parsedDraft = CompanySchema.partial().safeParse(JSON.parse(localStorageDraft));
+    if (!parsedDraft.success) {
+        return undefined;
+    }
+    return parsedDraft.data;
+}
+
+export type PartialStrictCompany = Partial<DECompany | USCompany>;
+
+const baseSchema = z.object({
+    companyName: z.string().min(3)
+});
+
+const usSchema = baseSchema.extend({
+    countryCode: z.literal('US'),
+    companyType: z.enum(['LLC', 'C-Corp', 'S-Corp'])
+});
+
+const deSchema = baseSchema.extend({
+    countryCode: z.literal('DE'),
+    companyType: z.enum(['GmbH', 'UG', 'AG'])
+});
+
+const CompanySchemaStrict = z.discriminatedUnion('countryCode', [usSchema, deSchema]);
+
+export async function saveCompanyDraftStrict(body: PartialStrictCompany): Promise<Response> {
+    await wait(1500);
+    const parsedBody = CompanySchemaStrict.safeParse(body);
+    if (!parsedBody.success) {
+        return { status: 400, body: { validationErrors: zodIssuesToValidationErrors(parsedBody.error.errors) } };
+    }
+
+    localStorage.setItem('companyDraft', JSON.stringify(parsedBody.data));
+    return { status: 200 };
+}
+
+export async function loadCompanyDraftStrict(): Promise<PartialStrictCompany | undefined> {
+    await wait(1500);
+    const localStorageDraft = localStorage.getItem('companyDraft');
+    if (!localStorageDraft) {
+        return undefined;
+    }
+    const parsedDraft = CompanySchemaStrict.safeParse(JSON.parse(localStorageDraft));
     if (!parsedDraft.success) {
         return undefined;
     }

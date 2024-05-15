@@ -33,6 +33,19 @@ export function RoutePanels(props: { renderLeftPanel: () => ReactNode, renderRig
     )
 }
 
+export function SingleMainPanel(props: { children: ReactNode }) {
+    return (
+        <>
+            <ResizableHandle />
+            <ResizablePanel minSize={60}>
+                <div className="p-4 overflow-y-scroll max-h-screen">
+                    {props.children}
+                </div>
+            </ResizablePanel>
+        </>
+    )
+}
+
 export function App() {
   return (
     <div className="h-screen w-screen">
@@ -69,11 +82,14 @@ export function App() {
                     <NavItem to="/preloading">
                         8. Preloading
                     </NavItem>
-                    <NavItem to="/preloading-data">
-                        8. Preloading Data
-                    </NavItem>
                     <NavItem to="/dependent-fields">
                         9. Dependent Fields
+                    </NavItem>
+                    <NavItem to="/dependent-fields-typesafe">
+                        10. Dependent Fields Typesafe
+                    </NavItem>
+                    <NavItem to="/thanks">
+                        Thanks
                     </NavItem>
                 </ul>
             </ResizablePanel>

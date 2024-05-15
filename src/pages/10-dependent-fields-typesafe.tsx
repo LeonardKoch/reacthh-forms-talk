@@ -5,26 +5,40 @@ import { Button } from '@/components/ui/button.tsx';
 import { Separator } from '@/components/ui/separator.tsx';
 import { z } from 'zod';
 import { Controller } from 'react-hook-form';
-import { loadCompanyDraft, saveCompanyDraft, submitCompany } from '@/backend/server.ts';
+import {
+    loadCompanyDraftStrict,
+    saveCompanyDraftStrict,
+    submitCompanyStrict
+} from '@/backend/server.ts';
 import { useZodForm } from '@/lib/useZodForm.ts';
 import { CodeDisplay } from '@/components/CodeDisplay.tsx';
 import { ErrorMessage } from '@hookform/error-message';
 import { useEffect, useState } from 'react';
 
-const formSchema = z.object({
-    countryCode: z.enum(['DE', 'US']),
-    companyName: z.string().min(3),
-    companyType: z.enum(['GmbH', 'UG', 'AG', 'LLC', 'C-Corp', 'S-Corp'])
+const baseSchema = z.object({
+    companyName: z.string().min(3)
 });
 
-export function DependentFields() {
+const usSchema = baseSchema.extend({
+    countryCode: z.literal('US'),
+    companyType: z.enum(['LLC', 'C-Corp', 'S-Corp'])
+});
+
+const deSchema = baseSchema.extend({
+    countryCode: z.literal('DE'),
+    companyType: z.enum(['GmbH', 'UG', 'AG'])
+});
+
+const formSchema = z.discriminatedUnion('countryCode', [usSchema, deSchema]);
+
+export function DependentFieldsTypeSafe() {
     const [preloadingData, setPreloadingData] = useState(true);
     const {
         control, register, handleSubmit, formState: { errors, isValid, isSubmitting }, reset, setError, watch
     } = useZodForm({ schema: formSchema, disabled: preloadingData, mode: 'onChange', defaultValues: { companyName: '' } })
 
     const onSubmit = handleSubmit(async (data) => {
-        const response = await submitCompany(data);
+        const response = await submitCompanyStrict(data);
         switch (response.status) {
             case 200: {
                 reset();
@@ -43,7 +57,7 @@ export function DependentFields() {
 
     useEffect(() => {
         const subscription = watch(async formValues => {
-            await saveCompanyDraft(formValues);
+            await saveCompanyDraftStrict(formValues);
         })
 
         return () => subscription.unsubscribe();
@@ -51,7 +65,7 @@ export function DependentFields() {
 
     useEffect(() => {
         setPreloadingData(true);
-        loadCompanyDraft().then(draft => {
+        loadCompanyDraftStrict().then(draft => {
             if (draft) {
                 reset(draft);
             }
@@ -115,26 +129,53 @@ export function DependentFields() {
     )
 }
 
-export function DependentFieldsCode() {
+export function DependentFieldsTypeSafeCode() {
     return (
         <div>
-            <p>This time using watch()'s returned value is our friend</p>
+            <h2 className="text-l font-bold">How do we take this field dependency into our Types?</h2>
             <CodeDisplay code={
-`const { watch } = useZodForm();
-                
-const [countryCode] = watch(['countryCode']);
+                `// Instead of one shared open type 
+type CompanyType = "GmbH" | "UG" | "AG" | "LLC" | "C-Corp" | "S-Corp";
+interface Company {
+    countryCode: 'DE' | 'US';
+    companyName: string;
+    companyType: CompanyType;
+}
 
-return (
-    ...
-    <SelectItem disabled={countryCode !== 'DE'} value="GmbH">GmbH</SelectItem>
-    <SelectItem disabled={countryCode !== 'DE'} value="UG">UG</SelectItem>
-    <SelectItem disabled={countryCode !== 'DE'} value="AG">AG</SelectItem>
-    <SelectItem disabled={countryCode !== 'US'} value="LLC">LLC</SelectItem>
-    <SelectItem disabled={countryCode !== 'US'} value="C-Corp">C-Corp</SelectItem>
-    <SelectItem disabled={countryCode !== 'US'} value="S-Corp">S-Corp</SelectItem>
-    ...
-)`}/>
-            <p>We can use it just fine to make decisions in render, like rendering different options.</p>
+// Two specific types 
+type DECompanyType = "GmbH" | "UG" | "AG";
+interface DECompany {
+    countryCode: 'DE';
+    companyName: string;
+    companyType: DECompanyType;
+}
+
+type USCompanyType = "LLC" | "C-Corp" | "S-Corp";
+interface USCompany {
+    countryCode: 'US';
+    companyName: string;
+    companyType: USCompanyType;
+}`}/>
+            <img src="/submitCompanyStrictError.png" alt="submitCompanyStrict error" className="my-4"/>
+            <p>Zod discriminating unions to the rescue! 🚀</p>
+            <CodeDisplay code={
+                `const baseSchema = z.object({
+    companyName: z.string().min(3)
+});
+
+const usSchema = baseSchema.extend({
+    countryCode: z.literal('US'),
+    companyType: z.enum(['LLC', 'C-Corp', 'S-Corp'])
+});
+
+const deSchema = baseSchema.extend({
+    countryCode: z.literal('DE'),
+    companyType: z.enum(['GmbH', 'UG', 'AG'])
+});
+
+const formSchema = z.discriminatedUnion('countryCode', [usSchema, deSchema]);`}/>
+            <img src="/submitCompanyStrictSuccess.png" alt="submitCompanyStrict success" className="my-4"/>
+            <p className="p-4 text-xl">😙🤌️</p>
         </div>
     )
 }
