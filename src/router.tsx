@@ -1,5 +1,5 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-import { App, RoutePanels, SingleMainPanel } from '@/App.tsx';
+import { App, RoutePanels } from '@/App.tsx';
 import { HTMLForm, HTMLFormCode } from '@/pages/1-html-form.tsx';
 import { StatesAndJSON, StatesAndJSONCode } from '@/pages/2-states-and-json.tsx';
 import { DynamicValidation, DynamicValidationCode } from '@/pages/3-dynamic-validation.tsx';
@@ -16,6 +16,7 @@ import { Preloading, PreloadingCode } from '@/pages/8-preloading.tsx';
 import { DependentFields, DependentFieldsCode } from '@/pages/9-dependent-fields.tsx';
 import { DependentFieldsTypeSafe, DependentFieldsTypeSafeCode } from '@/pages/10-dependent-fields-typesafe.tsx';
 import { Thanks } from '@/pages/11-thanks.tsx';
+import { Hello } from '@/pages/0-hello.tsx';
 
 export const router = createBrowserRouter([
     {
@@ -24,7 +25,11 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <Navigate to="/html-form"/>
+                element: <Navigate to="/hello"/>
+            },
+            {
+                path: "/hello",
+                element: <RoutePanels renderLeftPanel={() => <Hello/>} overrideMinLeftSize={80} renderRightPanel={() => <></>} />,
             },
             {
                 path: "/html-form",
@@ -76,7 +81,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/thanks",
-                element: <SingleMainPanel><Thanks /></SingleMainPanel>,
+                element: <RoutePanels renderLeftPanel={() => <Thanks/>} overrideMinLeftSize={80} renderRightPanel={() => <></>} />,
             },
         ]
     },

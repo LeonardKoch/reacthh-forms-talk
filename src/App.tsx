@@ -14,32 +14,19 @@ function NavItem (props: { to: string, children: ReactNode}) {
     )
 }
 
-export function RoutePanels(props: { renderLeftPanel: () => ReactNode, renderRightPanel: () => ReactNode }) {
+export function RoutePanels(props: { renderLeftPanel: () => ReactNode, renderRightPanel: () => ReactNode, overrideMinLeftSize?: number }) {
     return (
         <>
             <ResizableHandle />
-            <ResizablePanel minSize={18} defaultSize={40} className="pl-4 pr-4 pt-8 pb-8">
+            <ResizablePanel defaultSize={40} minSize={props.overrideMinLeftSize} className="pl-4 pr-4 pt-8 pb-8">
                 <Card>
                     {props.renderLeftPanel()}
                 </Card>
             </ResizablePanel>
             <ResizableHandle />
-            <ResizablePanel minSize={18}>
+            <ResizablePanel >
                 <div className="p-4 overflow-y-scroll max-h-screen">
                     {props.renderRightPanel()}
-                </div>
-            </ResizablePanel>
-        </>
-    )
-}
-
-export function SingleMainPanel(props: { children: ReactNode }) {
-    return (
-        <>
-            <ResizableHandle />
-            <ResizablePanel minSize={60}>
-                <div className="p-4 overflow-y-scroll max-h-screen">
-                    {props.children}
                 </div>
             </ResizablePanel>
         </>
@@ -50,7 +37,7 @@ export function App() {
   return (
     <div className="h-screen w-screen">
         <ResizablePanelGroup  direction="horizontal">
-            <ResizablePanel minSize={10} defaultSize={15} className="bg-neutral">
+            <ResizablePanel minSize={10} defaultSize={15} maxSize={20} className="bg-neutral">
                 <ul>
                     <NavItem to="/html-form">
                         1. Html Form

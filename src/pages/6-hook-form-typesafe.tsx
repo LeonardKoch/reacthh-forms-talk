@@ -100,7 +100,7 @@ export function HookFormTypesafeCode() {
             <strong>Zod: </strong><a href="https://zod.dev/">https://zod.dev</a><span> 😙🤌</span>
             <p>useHookForm</p>
             <CodeDisplay code={
-`import { zodResolver } from '@hookform/resolvers/zod';
+                `import { zodResolver } from '@hookform/resolvers/zod';
 import { UseFormProps, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -113,10 +113,10 @@ export function useZodForm<TSchema extends z.ZodType>(
         ...props,
         resolver: zodResolver(props.schema, undefined),
     });
-}`} />
+}`}/>
             <p>Usage</p>
             <CodeDisplay code={
-`const formSchema = z.object({
+                `const formSchema = z.object({
     countryCode: z.enum(['DE', 'US', 'FR']),
     companyName: z.string().min(3),
     companyType: z.enum(['GmbH', 'UG', 'AG', 'LLC', 'C-Corp', 'S-Corp'])
@@ -127,10 +127,14 @@ useZodForm({ schema: formSchema })`
 
             <p>Validation</p>
             <CodeDisplay code={
-`❌ rules={{ required: 'Country is required' }}
+                `❌ rules={{ required: 'Country is required' }}
 ❌ register('companyName', { minLength: 3 })
 ❌ rules={{ required: 'Company Type is required' }}`
             }/>
+            <p>Known Field Names</p>
+            <img src="/wrongFieldName.png" alt="A typescript error caught by hook form about a wrong field name" />
+            <p>Fully Typed Submit</p>
+            <img src="/fullyTypedSubmitData.png" alt="A type hover in an IDE showing a fully typed data object coming out of handleSubmit" />
         </div>
     )
 }
