@@ -25,7 +25,7 @@ export function RoutePanels(props: { renderLeftPanel: () => ReactNode, renderRig
             </ResizablePanel>
             <ResizableHandle />
             <ResizablePanel >
-                <div className="p-4 overflow-y-scroll max-h-screen">
+                <div className="p-4 overflow-y-auto max-h-screen">
                     {props.renderRightPanel()}
                 </div>
             </ResizablePanel>
@@ -38,7 +38,7 @@ export function App() {
     <div className="h-screen w-screen">
         <ResizablePanelGroup  direction="horizontal">
             <ResizablePanel minSize={10} defaultSize={15} maxSize={20} className="bg-neutral">
-                <ul className="overflow-y-scroll max-h-screen">
+                <ul className="overflow-y-auto max-h-screen">
                     <NavItem to="/html-form">
                         1. Html Form
                     </NavItem>
