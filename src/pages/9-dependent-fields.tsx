@@ -134,7 +134,7 @@ return (
     <SelectItem disabled={countryCode !== 'US'} value="S-Corp">S-Corp</SelectItem>
     ...
 )`}/>
-            <p>We can use it just fine to make decisions in render, like rendering different options.</p>
+            <p>We can use it just fine to make decisions in render, like enabling different options.</p>
         </div>
     )
 }
