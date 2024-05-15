@@ -17,7 +17,7 @@ const formSchema = z.object({
     companyType: z.enum(['GmbH', 'UG', 'AG', 'LLC', 'C-Corp', 'S-Corp'])
 });
 
-export function AutoSavingWatchPreloading() {
+export function DependentFields() {
     const [preloadingData, setPreloadingData] = useState(true);
     const {
         control, register, handleSubmit, formState: { errors, isValid, isSubmitting }, reset, setError, watch
@@ -59,9 +59,11 @@ export function AutoSavingWatchPreloading() {
         });
     }, [reset]);
 
+    const [countryCode] = watch(['countryCode']);
+
     return (
         <div>
-            <h1 className="p-4 text-xl font-bold">Auto Saving</h1>
+            <h1 className="p-4 text-xl font-bold">Preloading</h1>
             <form className="p-4 flex flex-col gap-2" onSubmit={onSubmit}>
                 <Label htmlFor="countryCode">Country</Label>
                 <Controller
@@ -95,12 +97,12 @@ export function AutoSavingWatchPreloading() {
                                 <SelectValue placeholder="Select Company Type"/>
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="GmbH">GmbH</SelectItem>
-                                <SelectItem value="UG">UG</SelectItem>
-                                <SelectItem value="AG">UG</SelectItem>
-                                <SelectItem value="LLC">LLC</SelectItem>
-                                <SelectItem value="C-Corp">C-Corp</SelectItem>
-                                <SelectItem value="S-Corp">S-Corp</SelectItem>
+                                <SelectItem disabled={countryCode !== 'DE'} value="GmbH">GmbH</SelectItem>
+                                <SelectItem disabled={countryCode !== 'DE'} value="UG">UG</SelectItem>
+                                <SelectItem disabled={countryCode !== 'DE'} value="AG">AG</SelectItem>
+                                <SelectItem disabled={countryCode !== 'US'} value="LLC">LLC</SelectItem>
+                                <SelectItem disabled={countryCode !== 'US'} value="C-Corp">C-Corp</SelectItem>
+                                <SelectItem disabled={countryCode !== 'US'} value="S-Corp">S-Corp</SelectItem>
                             </SelectContent>
                         </Select>
                     )}
@@ -113,26 +115,23 @@ export function AutoSavingWatchPreloading() {
     )
 }
 
-export function AutoSavingWatchPreloadingCode() {
+export function DependentFieldsCode() {
     return (
         <div>
-            <h2 className="text-l font-bold">The idiomatic way</h2>
-            <p>subscribe to watch() in an effect</p>
+            <p>This time using watch()'s returned value is our friend</p>
             <CodeDisplay code={
-                `const { watch } = useZodForm();
+`
+const { watch } = useZodForm();
                 
- useEffect(() => {
-    const subscription = watch(async formValues => {
-        console.log('Saving draft');
-        await saveCompanyDraft(formValues);
-        console.log('Draft saved')
-    })
+const [countryCode] = watch(['countryCode']);
 
-    return () => subscription.unsubscribe();
-}, [watch]);`}/>
-            <p className="p-4 text-xl">😙🤌️</p>
-            <p>The callback passed to watch() only gets called on form changes</p>
-            <p>No superfluous calls on random re-renders</p>
+<SelectItem disabled={countryCode !== 'DE'} value="GmbH">GmbH</SelectItem>
+<SelectItem disabled={countryCode !== 'DE'} value="UG">UG</SelectItem>
+<SelectItem disabled={countryCode !== 'DE'} value="AG">AG</SelectItem>
+<SelectItem disabled={countryCode !== 'US'} value="LLC">LLC</SelectItem>
+<SelectItem disabled={countryCode !== 'US'} value="C-Corp">C-Corp</SelectItem>
+<SelectItem disabled={countryCode !== 'US'} value="S-Corp">S-Corp</SelectItem>`}/>
+            <p>We can use it just fine to make decisions in render, like rendering different options.</p>
         </div>
     )
 }

@@ -66,17 +66,14 @@ export function App() {
                     <NavItem to="/auto-saving/watch-subscription">
                         7.3. Auto Saving - watch() Subscription
                     </NavItem>
-                    <NavItem to="/auto-saving/preloading">
-                        7.3. Auto Saving - Preloading
+                    <NavItem to="/preloading">
+                        8. Preloading
                     </NavItem>
                     <NavItem to="/preloading-data">
                         8. Preloading Data
                     </NavItem>
                     <NavItem to="/dependent-fields">
                         9. Dependent Fields
-                    </NavItem>
-                    <NavItem to="/remote-changes">
-                        10. Remote Changes
                     </NavItem>
                 </ul>
             </ResizablePanel>

@@ -55,7 +55,7 @@ export function AutoSavingWatchSubscription() {
 
     return (
         <div>
-            <h1 className="p-4 text-xl font-bold">Auto Saving</h1>
+            <h1 className="p-4 text-xl font-bold">Auto Saving - watch() Subscription</h1>
             <form className="p-4 flex flex-col gap-2" onSubmit={onSubmit}>
                 <Label htmlFor="countryCode">Country</Label>
                 <Controller

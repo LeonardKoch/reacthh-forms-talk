@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button.tsx';
 import { Separator } from '@/components/ui/separator.tsx';
 import { z } from 'zod';
 import { Controller } from 'react-hook-form';
-import { saveCompanyDraft, submitCompany } from '@/backend/server.ts';
+import { loadCompanyDraft, saveCompanyDraft, submitCompany } from '@/backend/server.ts';
 import { useZodForm } from '@/lib/useZodForm.ts';
 import { CodeDisplay } from '@/components/CodeDisplay.tsx';
 import { ErrorMessage } from '@hookform/error-message';
@@ -17,10 +17,11 @@ const formSchema = z.object({
     companyType: z.enum(['GmbH', 'UG', 'AG', 'LLC', 'C-Corp', 'S-Corp'])
 });
 
-export function AutoSavingWatchEffect() {
+export function Preloading() {
+    const [preloadingData, setPreloadingData] = useState(true);
     const {
         control, register, handleSubmit, formState: { errors, isValid, isSubmitting }, reset, setError, watch
-    } = useZodForm({ schema: formSchema, mode: 'onChange', defaultValues: { companyName: '' } })
+    } = useZodForm({ schema: formSchema, disabled: preloadingData, mode: 'onChange', defaultValues: { companyName: '' } })
 
     const onSubmit = handleSubmit(async (data) => {
         const response = await submitCompany(data);
@@ -40,21 +41,27 @@ export function AutoSavingWatchEffect() {
         }
     });
 
-    const formValues = watch();
+    useEffect(() => {
+        const subscription = watch(async formValues => {
+            await saveCompanyDraft(formValues);
+        })
+
+        return () => subscription.unsubscribe();
+    }, [watch]);
 
     useEffect(() => {
-        console.log('Saving draft');
-        saveCompanyDraft(formValues).then(() => {
-            console.log('Draft saved')
+        setPreloadingData(true);
+        loadCompanyDraft().then(draft => {
+            if (draft) {
+                reset(draft);
+            }
+            setPreloadingData(false);
         });
-    }, [formValues]);
-
-    const [hoverCount, setHoverCount] = useState(0);
-    console.log(`Hovered ${hoverCount} times`);
+    }, [reset]);
 
     return (
         <div>
-            <h1 className="p-4 text-xl font-bold">Auto Saving - watch() & useEffect</h1>
+            <h1 className="p-4 text-xl font-bold">Preloading</h1>
             <form className="p-4 flex flex-col gap-2" onSubmit={onSubmit}>
                 <Label htmlFor="countryCode">Country</Label>
                 <Controller
@@ -100,33 +107,31 @@ export function AutoSavingWatchEffect() {
                 />
                 <ErrorMessage errors={errors} name="companyType"/>
                 <Separator className="my-4"/>
-                <Button type="submit" disabled={isSubmitting || !isValid} >{isSubmitting ? 'Submitting...' : 'Submit'}</Button>
+                <Button type="submit" disabled={isSubmitting || !isValid || preloadingData} >{isSubmitting ? 'Submitting...' : 'Submit'}</Button>
             </form>
-            <div className="p-4">
-                <Button onMouseOver={() => setHoverCount(count => count + 1)}>Hover me for a re-render</Button>
-            </div>
         </div>
     )
 }
 
-export function AutoSavingWatchEffectCode() {
+export function PreloadingCode() {
     return (
         <div>
-            <h2 className="text-l font-bold">The slightly less naive implementation</h2>
-            <p>watch and useEffect</p>
+            <h2 className="text-l font-bold">Now let's load our saved data</h2>
+            <p>reset() for prefilling the form fields</p>
             <CodeDisplay code={
-                `const { watch } = useZodForm();
-const formValues = watch();
-
+`const [preloadingData, setPreloadingData] = useState(true);
+const { reset } = useZodForm({ disabled: preloadingData });
+                
 useEffect(() => {
-    console.log('Saving draft');
-    saveCompanyDraft(formValues).then(() => {
-        console.log('Draft saved')
+    setPreloadingData(true);
+    loadCompanyDraft().then(draft => {
+        if (draft) {
+            reset(draft);
+        }
+        setPreloadingData(false);
     });
-}, [formValues]);`}/>
-            <p className="p-4 text-xl">🙅‍♂️</p>
-            <p>watch() returns both a fresh object and fresh values on every render</p>
-            <p>A bad fit for useEffect</p>
+}, [reset]);`}/>
+            <p>{`useZodForm({ disabled: preloadingData })`} to disabled the entire form while we're loading the data</p>
         </div>
     )
 }
