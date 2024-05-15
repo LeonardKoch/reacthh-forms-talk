@@ -62,3 +62,16 @@ export async function saveCompanyDraft(body: PartialCompany): Promise<Response> 
     localStorage.setItem('companyDraft', JSON.stringify(parsedBody.data));
     return { status: 200 };
 }
+
+export async function loadCompanyDraft(): Promise<PartialCompany | undefined> {
+    await wait(1500);
+    const localStorageDraft = localStorage.getItem('companyDraft');
+    if (!localStorageDraft) {
+        return undefined;
+    }
+    const parsedDraft = CompanySchema.partial().safeParse(JSON.parse(localStorageDraft));
+    if (!parsedDraft.success) {
+        return undefined;
+    }
+    return parsedDraft.data;
+}

@@ -15,6 +15,7 @@ import {
     AutoSavingWatchSubscription,
     AutoSavingWatchSubscriptionCode
 } from '@/pages/7-3-auto-saving-watch-subscription.tsx';
+import { AutoSavingWatchPreloading, AutoSavingWatchPreloadingCode } from '@/pages/7-4-auto-saving-reloading.tsx';
 
 export const router = createBrowserRouter([
     {
@@ -60,6 +61,10 @@ export const router = createBrowserRouter([
             {
                 path: "/auto-saving/watch-subscription",
                 element: <RoutePanels renderLeftPanel={() => <AutoSavingWatchSubscription/>} renderRightPanel={() => <AutoSavingWatchSubscriptionCode />} />,
+            },
+            {
+                path: "/auto-saving/preloading",
+                element: <RoutePanels renderLeftPanel={() => <AutoSavingWatchPreloading/>} renderRightPanel={() => <AutoSavingWatchPreloadingCode />} />,
             },
             {
                 path: "/preloading-data",

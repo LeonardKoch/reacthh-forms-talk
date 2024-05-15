@@ -58,13 +58,16 @@ export function App() {
                         6. Hook Form Typesafe
                     </NavItem>
                     <NavItem to="/auto-saving/get-values">
-                        7.1. Auto Saving - getValues
+                        7.1. Auto Saving - getValues()
                     </NavItem>
                     <NavItem to="/auto-saving/watch-effect">
-                        7.2. Auto Saving - watch & useEffect
+                        7.2. Auto Saving - watch() & useEffect
                     </NavItem>
                     <NavItem to="/auto-saving/watch-subscription">
-                        7.2. Auto Saving - watch subscription
+                        7.3. Auto Saving - watch() Subscription
+                    </NavItem>
+                    <NavItem to="/auto-saving/preloading">
+                        7.3. Auto Saving - Preloading
                     </NavItem>
                     <NavItem to="/preloading-data">
                         8. Preloading Data
