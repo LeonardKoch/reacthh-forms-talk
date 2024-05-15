@@ -38,7 +38,7 @@ export function App() {
     <div className="h-screen w-screen">
         <ResizablePanelGroup  direction="horizontal">
             <ResizablePanel minSize={10} defaultSize={15} maxSize={20} className="bg-neutral">
-                <ul>
+                <ul className="overflow-y-scroll max-h-screen">
                     <NavItem to="/html-form">
                         1. Html Form
                     </NavItem>
