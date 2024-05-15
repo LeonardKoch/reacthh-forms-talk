@@ -5,21 +5,21 @@ import { Button } from '@/components/ui/button.tsx';
 import { Separator } from '@/components/ui/separator.tsx';
 import { z } from 'zod';
 import { Controller } from 'react-hook-form';
-import { submitCompany } from '@/backend/server.ts';
+import { saveCompanyDraft, submitCompany } from '@/backend/server.ts';
 import { useZodForm } from '@/lib/useZodForm.ts';
 import { CodeDisplay } from '@/components/CodeDisplay.tsx';
 import { ErrorMessage } from '@hookform/error-message';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const formSchema = z.object({
-    countryCode: z.enum(['DE', 'US', 'FR']),
+    countryCode: z.enum(['DE', 'US']),
     companyName: z.string().min(3),
     companyType: z.enum(['GmbH', 'UG', 'AG', 'LLC', 'C-Corp', 'S-Corp'])
 });
 
-export function AutoSaving() {
+export function AutoSavingWatchEffect() {
     const {
-        control, register, handleSubmit, formState: { errors, isValid, isSubmitting }, reset, setError, getValues
+        control, register, handleSubmit, formState: { errors, isValid, isSubmitting }, reset, setError, watch
     } = useZodForm({ schema: formSchema, mode: 'onChange', defaultValues: { companyName: '' } })
 
     const onSubmit = handleSubmit(async (data) => {
@@ -40,11 +40,17 @@ export function AutoSaving() {
         }
     });
 
-    const formValues = getValues();
+    const formValues = watch();
 
     useEffect(() => {
-
+        console.log('Saving draft');
+        saveCompanyDraft(formValues).then(() => {
+            console.log('Draft saved')
+        });
     }, [formValues]);
+
+    const [hoverCount, setHoverCount] = useState(0);
+    console.log(`Hovered ${hoverCount} times`);
 
     return (
         <div>
@@ -96,48 +102,31 @@ export function AutoSaving() {
                 <Separator className="my-4"/>
                 <Button type="submit" disabled={isSubmitting || !isValid} >{isSubmitting ? 'Submitting...' : 'Submit'}</Button>
             </form>
+            <div className="p-4">
+                <Button onMouseOver={() => setHoverCount(count => count + 1)}>Hover me for a re-render</Button>
+            </div>
         </div>
     )
 }
 
-export function HookFormTypesafeCode() {
+export function AutoSavingWatchEffectCode() {
     return (
         <div>
-            <h2 className="text-l font-bold">Zod & useZodForm</h2>
-            <strong>Zod: </strong><a href="https://zod.dev/">https://zod.dev</a><span> 😙🤌</span>
-            <p>useHookForm</p>
+            <h2 className="text-l font-bold">The slightly less naive implementation</h2>
+            <p>watch and useEffect</p>
             <CodeDisplay code={
-                `import { zodResolver } from '@hookform/resolvers/zod';
-import { UseFormProps, useForm } from 'react-hook-form';
-import { z } from 'zod';
+                `const { watch } = useZodForm();
+const formValues = watch();
 
-export function useZodForm<TSchema extends z.ZodType>(
-    props: Omit<UseFormProps<TSchema['_input']>, 'resolver'> & {
-        schema: TSchema;
-    }
-) {
-    return useForm<TSchema['_input']>({
-        ...props,
-        resolver: zodResolver(props.schema, undefined),
+useEffect(() => {
+    console.log('Saving draft');
+    saveCompanyDraft(formValues).then(() => {
+        console.log('Draft saved')
     });
-}`} />
-            <p>Usage</p>
-            <CodeDisplay code={
-                `const formSchema = z.object({
-    countryCode: z.enum(['DE', 'US', 'FR']),
-    companyName: z.string().min(3),
-    companyType: z.enum(['GmbH', 'UG', 'AG', 'LLC', 'C-Corp', 'S-Corp'])
-});
-
-useZodForm({ schema: formSchema })`
-            }/>
-
-            <p>Validation</p>
-            <CodeDisplay code={
-                `❌ rules={{ required: 'Country is required' }}
-❌ register('companyName', { minLength: 3 })
-❌ rules={{ required: 'Company Type is required' }}`
-            }/>
+}, [formValues]);`}/>
+            <p className="p-4 text-xl">🙅‍♂️</p>
+            <p>watch() returns both a fresh object and fresh values on every render</p>
+            <p>A bad fit for useEffect</p>
         </div>
     )
 }

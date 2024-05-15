@@ -35,7 +35,6 @@ function zodIssuesToValidationErrors(issues: z.ZodIssue[]): Record<string, strin
 }
 
 export async function submitCompany(body: unknown): Promise<Response> {
-    console.log('Submitting company', body);
     await wait(1500);
     const parsedBody = CompanySchema.safeParse(body);
     if (parsedBody.success) {
@@ -48,4 +47,18 @@ export async function submitCompany(body: unknown): Promise<Response> {
         console.log(parsedBody.error.errors);
         return { status: 400, body: { validationErrors: zodIssuesToValidationErrors(parsedBody.error.errors) } };
     }
+}
+
+
+export type PartialCompany = Partial<Company>;
+
+export async function saveCompanyDraft(body: PartialCompany): Promise<Response> {
+    await wait(1500);
+    const parsedBody = CompanySchema.partial().safeParse(body);
+    if (!parsedBody.success) {
+        return { status: 400, body: { validationErrors: zodIssuesToValidationErrors(parsedBody.error.errors) } };
+    }
+
+    localStorage.setItem('companyDraft', JSON.stringify(parsedBody.data));
+    return { status: 200 };
 }
