@@ -15,8 +15,12 @@ import {
 import { Preloading, PreloadingCode } from '@/pages/8-preloading.tsx';
 import { DependentFields, DependentFieldsCode } from '@/pages/9-dependent-fields.tsx';
 import { DependentFieldsTypeSafe, DependentFieldsTypeSafeCode } from '@/pages/10-dependent-fields-typesafe.tsx';
-import { Thanks } from '@/pages/11-thanks.tsx';
+import { Thanks } from '@/pages/12-thanks.tsx';
 import { Hello } from '@/pages/0-hello.tsx';
+import {
+    DependentFieldsValueChange,
+    DependentFieldsValueChangeCode
+} from '@/pages/11-dependent-fields-with-value-change.tsx';
 
 export const router = createBrowserRouter([
     {
@@ -29,7 +33,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/hello",
-                element: <RoutePanels renderLeftPanel={() => <Hello/>} overrideMinLeftSize={80} renderRightPanel={() => <></>} />,
+                element: <RoutePanels renderLeftPanel={() => <Hello/>} overrideMinLeftSize={60} renderRightPanel={() => <></>} />,
             },
             {
                 path: "/html-form",
@@ -80,8 +84,12 @@ export const router = createBrowserRouter([
                 element: <RoutePanels renderLeftPanel={() => <DependentFieldsTypeSafe/>} renderRightPanel={() => <DependentFieldsTypeSafeCode />} />,
             },
             {
+                path: "/dependent-fields-value-changes",
+                element: <RoutePanels renderLeftPanel={() => <DependentFieldsValueChange/>} renderRightPanel={() => <DependentFieldsValueChangeCode />} />,
+            },
+            {
                 path: "/thanks",
-                element: <RoutePanels renderLeftPanel={() => <Thanks/>} overrideMinLeftSize={80} renderRightPanel={() => <></>} />,
+                element: <RoutePanels renderLeftPanel={() => <Thanks/>} overrideMinLeftSize={60} renderRightPanel={() => <></>} />,
             },
         ]
     },
