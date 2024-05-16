@@ -77,7 +77,7 @@ export function HookFormTypesafe() {
                             <SelectContent>
                                 <SelectItem value="GmbH">GmbH</SelectItem>
                                 <SelectItem value="UG">UG</SelectItem>
-                                <SelectItem value="AG">UG</SelectItem>
+                                <SelectItem value="AG">AG</SelectItem>
                                 <SelectItem value="LLC">LLC</SelectItem>
                                 <SelectItem value="C-Corp">C-Corp</SelectItem>
                                 <SelectItem value="S-Corp">S-Corp</SelectItem>
@@ -97,7 +97,8 @@ export function HookFormTypesafeCode() {
     return (
         <div>
             <h2 className="text-l font-bold">Zod & useZodForm</h2>
-            <strong>Zod: </strong><a href="https://zod.dev/">https://zod.dev</a><span> 😙🤌</span>
+            <strong>Zod: </strong><a className="text-blue-600"
+                                     href="https://zod.dev/">https://zod.dev</a><span> 😙🤌</span>
             <p>useHookForm</p>
             <CodeDisplay code={
                 `import { zodResolver } from '@hookform/resolvers/zod';
@@ -114,6 +115,9 @@ export function useZodForm<TSchema extends z.ZodType>(
         resolver: zodResolver(props.schema, undefined),
     });
 }`}/>
+            <p>Also available as a package: <a className="text-blue-600"
+                                               href="https://github.com/lukahartwig/react-hook-form-zod">react-hook-form-zod</a>
+            </p>
             <p>Usage</p>
             <CodeDisplay code={
                 `const formSchema = z.object({
@@ -132,9 +136,10 @@ useZodForm({ schema: formSchema })`
 ❌ rules={{ required: 'Company Type is required' }}`
             }/>
             <p>Known Field Names</p>
-            <img src="/wrongFieldName.png" alt="A typescript error caught by hook form about a wrong field name" />
+            <img src="/wrongFieldName.png" alt="A typescript error caught by hook form about a wrong field name"/>
             <p>Fully Typed Submit</p>
-            <img src="/fullyTypedSubmitData.png" alt="A type hover in an IDE showing a fully typed data object coming out of handleSubmit" />
+            <img src="/fullyTypedSubmitData.png"
+                 alt="A type hover in an IDE showing a fully typed data object coming out of handleSubmit"/>
         </div>
     )
 }
